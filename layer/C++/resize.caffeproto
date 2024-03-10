@@ -1,0 +1,16 @@
+message ResizeParameter {// from yangyi
+	optional float resize_ratio = 1 [default = 1.0]; // The resize ratio (equal in Y, X)
+    //optional uint32 width = 2 [default = 0];
+    //optional uint32 height = 3 [default = 0];
+    enum Type {
+      NEAREST = 1;
+      BILINEAR = 2;
+    }
+    // Specify the Norm to use L1 or L2
+    optional Type type = 4 [default = NEAREST];
+    optional bool is_pyramid_test =5[default = false];
+    optional float height=6;
+    optional float width=7;
+    optional float out_height_scale=8;
+    optional float out_width_scale=9;
+}

@@ -1,0 +1,19 @@
+# lr_policy: "step"
+# stepsize: 10000
+# gamma: 0.2
+
+net: "prototxt/stage2/train.prototxt"
+test_iter: 100
+test_interval: 1000
+base_lr: 0.001
+lr_policy: "fixed"
+momentum: 0.9
+weight_decay: 0.00002
+display: 100
+average_loss: 100
+max_iter: 2250000
+snapshot: 1000
+snapshot_prefix: "output/stage2/DAN_s2"
+solver_mode: GPU
+device_id: 0
+solver_type: SGD

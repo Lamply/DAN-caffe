@@ -1,0 +1,17 @@
+net: "prototxt/stage1/train.prototxt"
+test_iter: 100
+test_interval: 1000
+test_initialization: false
+base_lr: 0.0003
+display: 100
+average_loss: 100
+lr_policy: "multistep"
+gamma: 0.1
+stepvalue: 42000
+stepvalue: 72000
+momentum: 0.9
+weight_decay: 0.0002
+max_iter: 2200000
+snapshot: 1000
+snapshot_prefix: "output/stage1/DAN_vgglike"
+solver_mode: GPU

@@ -1,0 +1,11 @@
+*.pyc
+__pycache__
+.vscode
+*~
+.ipynb_checkpoints
+*.ipynb
+
+ori_proj/
+deprecated/
+tmp/
+log/

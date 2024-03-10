@@ -1,0 +1,661 @@
+name: "DAN"
+layer {
+  name: 'input-data'
+  type: 'HDF5Data'
+  top: 'data'
+  top: 'initlandmark'
+  top: 'gtlandmark'
+  top: 'eyedist'
+  hdf5_data_param {
+    source: 'data/train.txt'
+    batch_size: 24
+    shuffle: true
+  }
+  include {
+    phase: TRAIN
+  }
+}
+
+layer {
+  name: 'input-data'
+  type: 'HDF5Data'
+  top: 'data'
+  top: 'initlandmark'
+  top: 'gtlandmark'
+  top: 'eyedist'
+  hdf5_data_param {
+    source: 'data/val.txt'
+    batch_size: 1
+  }
+  include {
+    phase: TEST
+  }
+}
+
+layer {
+  name: "conv1_1"
+  type: "Convolution"
+  bottom: "data"
+  top: "conv1_1"
+  param {
+    lr_mult: 1
+  }
+  convolution_param {
+    num_output: 64
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+    bias_term: false
+  }
+}
+layer {
+  name: "bn1_1"
+  type: "BatchNorm"
+  bottom: "conv1_1"
+  top: "conv1_1"
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+}
+layer {
+  name: "scale1_1"
+  type: "Scale"
+  bottom: "conv1_1"
+  top: "conv1_1"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "relu1_1"
+  type: "ReLU"
+  bottom: "conv1_1"
+  top: "conv1_1"
+}
+layer {
+  name: "conv1_2"
+  type: "Convolution"
+  bottom: "conv1_1"
+  top: "conv1_2"
+  param {
+    lr_mult: 1
+  }
+  convolution_param {
+    num_output: 64
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+    bias_term: false
+  }
+}
+layer {
+  name: "bn1_2"
+  type: "BatchNorm"
+  bottom: "conv1_2"
+  top: "conv1_2"
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+}
+layer {
+  name: "scale1_2"
+  type: "Scale"
+  bottom: "conv1_2"
+  top: "conv1_2"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "relu1_2"
+  type: "ReLU"
+  bottom: "conv1_2"
+  top: "conv1_2"
+}
+layer {
+  name: "pool1"
+  type: "Pooling"
+  bottom: "conv1_2"
+  top: "pool1"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2_1"
+  type: "Convolution"
+  bottom: "pool1"
+  top: "conv2_1"
+  param {
+    lr_mult: 1
+  }
+  convolution_param {
+    num_output: 128
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+    bias_term: false
+  }
+}
+layer {
+  name: "bn2_1"
+  type: "BatchNorm"
+  bottom: "conv2_1"
+  top: "conv2_1"
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+}
+layer {
+  name: "scale2_1"
+  type: "Scale"
+  bottom: "conv2_1"
+  top: "conv2_1"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "relu2_1"
+  type: "ReLU"
+  bottom: "conv2_1"
+  top: "conv2_1"
+}
+layer {
+  name: "conv2_2"
+  type: "Convolution"
+  bottom: "conv2_1"
+  top: "conv2_2"
+  param {
+    lr_mult: 1
+  }
+  convolution_param {
+    num_output: 128
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+    bias_term: false
+  }
+}
+layer {
+  name: "bn2_2"
+  type: "BatchNorm"
+  bottom: "conv2_2"
+  top: "conv2_2"
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+}
+layer {
+  name: "scale2_2"
+  type: "Scale"
+  bottom: "conv2_2"
+  top: "conv2_2"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "relu2_2"
+  type: "ReLU"
+  bottom: "conv2_2"
+  top: "conv2_2"
+}
+layer {
+  name: "pool2"
+  type: "Pooling"
+  bottom: "conv2_2"
+  top: "pool2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv3_1"
+  type: "Convolution"
+  bottom: "pool2"
+  top: "conv3_1"
+  param {
+    lr_mult: 1
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+    bias_term: false
+  }
+}
+layer {
+  name: "bn3_1"
+  type: "BatchNorm"
+  bottom: "conv3_1"
+  top: "conv3_1"
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+}
+layer {
+  name: "scale3_1"
+  type: "Scale"
+  bottom: "conv3_1"
+  top: "conv3_1"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "relu3_1"
+  type: "ReLU"
+  bottom: "conv3_1"
+  top: "conv3_1"
+}
+layer {
+  name: "conv3_2"
+  type: "Convolution"
+  bottom: "conv3_1"
+  top: "conv3_2"
+  param {
+    lr_mult: 1
+  }
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+    bias_term: false
+  }
+}
+layer {
+  name: "bn3_2"
+  type: "BatchNorm"
+  bottom: "conv3_2"
+  top: "conv3_2"
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+}
+layer {
+  name: "scale3_2"
+  type: "Scale"
+  bottom: "conv3_2"
+  top: "conv3_2"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "relu3_2"
+  type: "ReLU"
+  bottom: "conv3_2"
+  top: "conv3_2"
+}
+layer {
+  name: "pool3"
+  type: "Pooling"
+  bottom: "conv3_2"
+  top: "pool3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv4_1"
+  type: "Convolution"
+  bottom: "pool3"
+  top: "conv4_1"
+  param {
+    lr_mult: 1
+  }
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+    bias_term: false
+  }
+}
+layer {
+  name: "bn4_1"
+  type: "BatchNorm"
+  bottom: "conv4_1"
+  top: "conv4_1"
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+}
+layer {
+  name: "scale4_1"
+  type: "Scale"
+  bottom: "conv4_1"
+  top: "conv4_1"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "relu4_1"
+  type: "ReLU"
+  bottom: "conv4_1"
+  top: "conv4_1"
+}
+layer {
+  name: "conv4_2"
+  type: "Convolution"
+  bottom: "conv4_1"
+  top: "conv4_2"
+  param {
+    lr_mult: 1
+  }
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+    weight_filler {
+      type: "msra"
+    }
+    bias_term: false
+  }
+}
+layer {
+  name: "bn4_2"
+  type: "BatchNorm"
+  bottom: "conv4_2"
+  top: "conv4_2"
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+}
+layer {
+  name: "scale4_2"
+  type: "Scale"
+  bottom: "conv4_2"
+  top: "conv4_2"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "relu4_2"
+  type: "ReLU"
+  bottom: "conv4_2"
+  top: "conv4_2"
+}
+layer {
+  name: "pool4"
+  type: "Pooling"
+  bottom: "conv4_2"
+  top: "pool4"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+
+#========= Full Connect ============
+layer {
+  name: "drop5"
+  type: "Dropout"
+  bottom: "pool4"
+  top: "pool4"
+  dropout_param {
+    dropout_ratio: 0.6
+  }
+}
+layer {
+  name: "fc5"
+  type: "InnerProduct"
+  bottom: "pool4"
+  top: "fc5"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  inner_product_param {
+    num_output: 256
+    weight_filler {
+      type: "msra"
+    }
+    bias_term: false
+  }
+}
+layer {
+  name: "bn5_1"
+  type: "BatchNorm"
+  bottom: "fc5"
+  top: "fc5"
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+  param {
+    lr_mult: 0
+  }
+}
+layer {
+  name: "scale5_1"
+  type: "Scale"
+  bottom: "fc5"
+  top: "fc5"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 1
+    decay_mult: 0
+  }
+  scale_param {
+    bias_term: true
+  }
+}
+layer {
+  name: "relu5"
+  type: "ReLU"
+  bottom: "fc5"
+  top: "fc5"
+}
+
+layer {
+  name: "pred"
+  type: "InnerProduct"
+  bottom: "fc5"
+  top: "pred"
+  param {
+    lr_mult: 1
+    decay_mult: 1
+  }
+  param {
+    lr_mult: 2
+    decay_mult: 0
+  }
+  inner_product_param {
+    num_output: 136
+  }
+}
+layer {
+  name: "pred_plus"
+  type: "Python"
+  bottom: "pred"
+  top: "pred_plus"
+  python_param {
+    module: 'SumConstsLayer'
+    layer: 'SumConstsLayer'
+  }
+}
+
+layer {
+  name: "mean_loss"
+  type: "Python"
+  bottom: "pred_plus"
+  bottom: "initlandmark"
+  bottom: "gtlandmark"
+  bottom: "eyedist"
+  top: "mean_loss"
+  python_param {
+    # the module name -- usually the filename -- that needs to be in $PYTHONPATH
+    module: 'PointsLossLayer'
+    # the layer name -- the class name in the module
+    layer: 'PointsLossLayer'
+  }
+  # set loss weight so Caffe knows this is a loss layer
+  loss_weight: 1
+}
+
+# layer {
+#   name: "mean_loss"
+#   type: "EuclideanLoss"
+#   bottom: "pred_plus"
+#   bottom: "gtlandmark"
+#   top: "mean_loss"
+#   include {
+#     phase: TRAIN
+#   }
+#   loss_weight: 1
+# }
+# layer {
+#   name: "error"
+#   type: "EuclideanLoss"
+#   bottom: "pred"
+#   bottom: "gtlandmark"
+#   top: "error"
+#   include {
+#     phase: TEST
+#   }
+# }
+
